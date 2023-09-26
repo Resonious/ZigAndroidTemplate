@@ -24,8 +24,6 @@ pub fn findUserConfig(b: *Builder, versions: Sdk.ToolchainVersions) !UserConfig 
     // Check for a user config file.
     if (std.fs.cwd().openFile(config_path, .{})) |file| {
         defer file.close();
-        // @panic("Config file not supported yet");
-        std.debug.print("Config file: TODO\n", .{});
         const bytes = file.readToEndAlloc(b.allocator, 1 * 1000 * 1000) catch |err| {
             print("Unexpected error reading {s}: {s}\n", .{ config_path, @errorName(err) });
             return err;
@@ -100,10 +98,10 @@ pub fn findUserConfig(b: *Builder, versions: Sdk.ToolchainVersions) !UserConfig 
         const LSTATUS = u32;
         const DWORD = u32;
 
-        // const HKEY_CLASSES_ROOT: HKEY= @ptrFromInt(0x80000000);
-        const HKEY_CURRENT_USER: HKEY = @ptrFromInt(0x80000001);
-        const HKEY_LOCAL_MACHINE: HKEY = @ptrFromInt(0x80000002);
-        // const HKEY_USERS: HKEY= @ptrFromInt(0x80000003);
+        // const HKEY_CLASSES_ROOT = @ptrFromInt(HKEY, 0x80000000);
+        const HKEY_CURRENT_USER = @as(HKEY, @ptrFromInt(0x80000001));
+        const HKEY_LOCAL_MACHINE = @as(HKEY, @ptrFromInt(0x80000002));
+        // const HKEY_USERS = @ptrFromInt(HKEY, 0x80000003);
 
         // const RRF_RT_ANY: DWORD = 0xFFFF;
         // const RRF_RT_REG_BINARY: DWORD = 0x08;
